@@ -73,7 +73,7 @@ def index():
         
         chromev2 = ChromeV2(model, instruct + "\nUser Settings: " + settings)
         db = chromev2.search(query, row)
-        prompt = ""
+        prompt = "" #Example usage: "What is KANs?"
         for i in range(len(db)):
             prompt += f"{i}. [{str(db[i][0])}], [{str(db[i][1])}]\n"
         answer = chromev2.chat(prompt)
