@@ -2,4 +2,4 @@ MODEL_KEY=#gemini api key
 SEARCH_KEY=#google search api key
 ENGINE_ID=#engine id code
 model=gemini-1.5-flash
-row=1
+row=2
