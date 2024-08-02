@@ -3,9 +3,23 @@ import google.generativeai as genai
 import requests
 import re
 
-MODEL_KEY = # gemini api key
-SEARCH_KEY = # google search api key
-ENGINE_ID = # engine id code
+config = open('config.txt', 'r', encoding='utf-8').readlines()
+model = None
+row = None
+MODEL_KEY = None
+SEARCH_KEY = None
+ENGINE_ID = None
+for line in config:
+    if line.startswith("model="):
+        model = line.split('=')[1].strip()
+    elif line.startswith("row="):
+        row = int(line.split('=')[1].strip())
+    elif line.startswith("MODEL_KEY="):
+        MODEL_KEY = line.split('=')[1].strip()
+    elif line.startswith("SEARCH_KEY="):
+        SEARCH_KEY = line.split('=')[1].strip()
+    elif line.startswith("ENGINE_ID="):
+        ENGINE_ID = line.split('=')[1].strip()
 
 app = Flask(__name__)
 
@@ -57,8 +71,8 @@ def index():
         settings = request.form.get('settings')
         query = request.form.get('query')
         
-        chromev2 = ChromeV2('gemini-1.5-flash', instruct + "\nUser Settings: " + settings)
-        db = chromev2.search(query, 1)
+        chromev2 = ChromeV2(model, instruct + "\nUser Settings: " + settings)
+        db = chromev2.search(query, row)
         prompt = ""
         for i in range(len(db)):
             prompt += f"{i}. [{str(db[i][0])}], [{str(db[i][1])}]\n"
